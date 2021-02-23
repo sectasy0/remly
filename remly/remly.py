@@ -1,13 +1,14 @@
 import struct
 import socket
+import random
+import sys
+import re
 
 from typing import List
 from subprocess import Popen, PIPE
 from os import path
 
-import random
-import sys
-import re
+from network.utils import is_valid_eth_address
 
 
 def __get_ip_from_eth(eth_addr: str) -> str:
