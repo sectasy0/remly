@@ -1,5 +1,5 @@
 import socket
-
+import struct
 
 def is_valid_eth_address(eth_addr: str) -> bool:
     ''' return a bool
@@ -31,3 +31,23 @@ def is_valid_ipv4_address(ipv4_addr: str) -> bool:
         return False
 
     return True
+
+
+def crc16(packet: bytes) -> bytes:
+    '''return bytes
+
+    packet - data to generate crc
+
+    crc16 checksum algorith
+    '''
+    total: int = 0
+    num_words: int = len(packet) // 2
+    for chunk in struct.unpack("!%sH" % num_words, packet[0:num_words*2]):
+        total += chunk
+
+    if len(packet) % 2:
+        total += ord(packet[-1]) << 8
+
+    total = (total >> 16) + (total & 0xffff)
+    total += total >> 16
+    return (~total + 0x10000 & 0xffff)
