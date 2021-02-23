@@ -16,7 +16,7 @@ def ipv4_arptable(eth_addr: str) -> str:
         output = Popen(['arp', '-a'], stdout=PIPE,
                        stderr=PIPE).communicate()[0].decode('utf-8')
         for line in output.strip().split('\n'):
-            if re.search(searchstr, line):
+            if re.search(searchstr, line, re.IGNORECASE):
                 return line.split()[0]
     except FileNotFoundError:
         arp_cache: str = '/proc/net/arp'
