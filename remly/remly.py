@@ -8,10 +8,11 @@ from typing import List
 from subprocess import Popen, PIPE
 from os import path
 
+
 from network.utils import is_valid_eth_address
 
 
-def __get_ip_from_eth(eth_addr: str) -> str:
+def ipv4_arptable(eth_addr: str) -> str:
     ''' return a string
 
     eth_addr - mac address
