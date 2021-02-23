@@ -10,7 +10,7 @@ import sys
 import re
 
 
-def __ethaddr_verify(eth_addr: str) -> bool:
+def is_valid_eth_address(eth_addr: str) -> bool:
     ''' return a bool
 
     eth_addr - mac address
@@ -63,7 +63,7 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0)
     In more extensive networks with more routers, the gateway must be properly configured to pass the 
     magic packet through, and here the port matters.
     '''
-    if not __ethaddr_verify(eth_addr):
+    if not is_valid_eth_address(eth_addr):
         raise ValueError("incorrect ethernet address")
 
     address_oct: List[str] = eth_addr.split(
