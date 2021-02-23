@@ -8,7 +8,6 @@ from typing import List
 from subprocess import Popen, PIPE
 from os import path
 
-
 from network.utils import is_valid_eth_address
 
 
@@ -28,7 +27,7 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0)
     magic packet through, and here the port matters.
     '''
     if not is_valid_eth_address(eth_addr):
-        raise ValueError("incorrect ethernet address")
+        raise ValueError("Incorrect entry, use 6-bytes physical address")
 
     address_oct: List[str] = eth_addr.split(
         ':') if eth_addr[2] == ':' else eth_addr.split('-')
@@ -57,4 +56,4 @@ def status(ip_addres: str = None, eth_addr: str = None) -> bool:
 
     check the status of the device based on ip or mac address
     '''
-    return NotImplementedError
+    raise NotImplementedError
