@@ -2,3 +2,4 @@ dist/*
 build/*
 remly.egg-info/*
 __pycache__/*
+*.pyc
