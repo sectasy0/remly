@@ -19,6 +19,8 @@ def is_valid_ipv4_address(ipv4_addr: str) -> bool:
 
     verification of the ipv4 address
     '''
+    if ipv4_addr is None: return False
+
     try:
         socket.inet_pton(socket.AF_INET, ipv4_addr)
     except AttributeError:
