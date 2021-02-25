@@ -8,7 +8,9 @@ from typing import List
 from subprocess import Popen, PIPE
 from os import path
 
-from network.utils import is_valid_eth_address
+from network.utils import (is_valid_eth_address,
+                           is_valid_ipv4_address, crc16)
+from network.arp import ipv4_arptable
 
 
 def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0) -> None:
@@ -51,9 +53,41 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0)
         sock.close()
 
 
-def status(ip_addres: str = None, eth_addr: str = None) -> bool:
+
+def status(ip_address: str = None, eth_addr: str = None, port: int = 1, timeout: int = 1) -> bool:
     ''' return bool (true - online, false - offline)
 
     check the status of the device based on ip or mac address
     '''
-    raise NotImplementedError
+    if eth_addr:
+        ip_address = ipv4_arptable(eth_addr)
+
+    if is_valid_ipv4_address(ip_address):
+        ICMP_ECHO_REQUEST: int = 8
+        ICMP_CODE: int = socket.getprotobyname('icmp')
+
+        ident: int = int((id(1) * random.random()) % 65535)
+        icmp_header: struct = struct.pack('!BBHHH', ICMP_ECHO_REQUEST, 0, 0, int(
+            ident), 1)
+
+        payload: str = bytes((16 * 'Q').encode())
+
+        packet_checksum: int = int(crc16(icmp_header + payload))
+        icmp_header = struct.pack(
+            '!BBHHH', ICMP_ECHO_REQUEST, 0, packet_checksum, ident, 1)
+
+        with socket.socket(socket.AF_INET, socket.SOCK_RAW, ICMP_CODE) as __sock:
+            try:
+                __sock.settimeout(timeout)
+                __sock.sendto(icmp_header+payload, (ip_address, port))
+                raw_data: bytes = __sock.recv(1024)
+                icmp_header: tuple = struct.unpack('!BBHHH', raw_data[20:28])
+                if icmp_header[0] == 0:
+                    return True
+            except socket.timeout:
+                return False
+
+            __sock.close()
+
+    else:
+        raise ValueError('Incorrect entry, please use IPv4 CIDR or mac format')
