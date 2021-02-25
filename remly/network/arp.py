@@ -2,13 +2,12 @@ from subprocess import Popen, PIPE
 from os import path
 import re, sys
 
-def ipv4_arptable(eth_addr: str) -> str:
+def read_arptable(eth_addr: str) -> str:
     ''' return a string
 
     eth_addr - mac address
 
-    universal way to get ip address from the ARP table
-    compatibile with posix systems, and nt
+    universal way to get ip address and mac from the system ARP table
     '''
     searchstr = eth_addr.replace(
         ':', '.?') if eth_addr[2] == ':' else eth_addr.replace('-', '.?')

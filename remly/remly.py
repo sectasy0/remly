@@ -10,7 +10,7 @@ from os import path
 
 from network.utils import (is_valid_eth_address,
                            is_valid_ipv4_address, crc16)
-from network.arp import ipv4_arptable
+from network.arp import read_arptable
 
 
 def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0) -> None:
@@ -60,7 +60,7 @@ def status(ip_address: str = None, eth_addr: str = None, port: int = 1, timeout:
     check the status of the device based on ip or mac address
     '''
     if eth_addr:
-        ip_address = ipv4_arptable(eth_addr)
+        ip_address = read_arptable(eth_addr)
 
     if is_valid_ipv4_address(ip_address):
         ICMP_ECHO_REQUEST: int = 8
