@@ -34,7 +34,7 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0)
     address_oct: List[str] = eth_addr.split(
         ':') if eth_addr[2] == ':' else eth_addr.split('-')
 
-    magic_packet: struct = struct.pack('!BBBBBB',
+    magic_packet: bytes = struct.pack('!BBBBBB',
                                        int(address_oct[0], 16),
                                        int(address_oct[1], 16),
                                        int(address_oct[2], 16),
@@ -67,11 +67,11 @@ def status(ip_address: str = None, eth_addr: str = None, port: int = 1, timeout:
         ICMP_CODE: int = socket.getprotobyname('icmp')
 
         ident: int = int((id(1) * random.random()) % 65535)
-        icmp_header: struct = struct.pack('!BBHHH', ICMP_ECHO_REQUEST, 0, 0, int(
+        icmp_header: bytes = struct.pack('!BBHHH', ICMP_ECHO_REQUEST, 0, 0, int(
             ident), 1)
 
-        payload: str = bytes((16 * 'Q').encode())
-
+        payload: bytes = bytes((16 * 'Q').encode())
+        
         packet_checksum: int = int(crc16(icmp_header + payload))
         icmp_header = struct.pack(
             '!BBHHH', ICMP_ECHO_REQUEST, 0, packet_checksum, ident, 1)
@@ -91,3 +91,4 @@ def status(ip_address: str = None, eth_addr: str = None, port: int = 1, timeout:
 
     else:
         raise ValueError('Incorrect entry, please use IPv4 CIDR or mac format')
+    
