@@ -42,8 +42,8 @@ known_computers = {
     "dev2": "60:f4:4c:53:9a:7f"
 }
 
-for computer in known_computers:
-    wake_up(eth_addr=computer, bcasts=['192.168.16.255'], port=9)
+for __, dev in known_computers.items():
+    wake_up(eth_addr=dev, bcasts=['192.168.16.255'], port=9)
 
 ```
 
