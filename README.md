@@ -56,7 +56,8 @@ for __, dev in known_computers.items():
 * 1.0.51
     * code documentation.
     * upgrade mac verification function to support more physical addresses formats.
-    * added future allows getting ip addres from mac (__get_ip_from_eth).
+    * added future allows getting ip addres from mac (read_arptable).
+    * added checking device status function.
 * 1.0.5
     * fixed a startup bug.
     * improve code.
