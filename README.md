@@ -29,9 +29,13 @@ optional arguments:
 
 #### library
 ```python
-from remly import wake_up
+from remly import wake_up, status
 
 wake_up(eth_addr="AA:AA:AA:AA:AA:AA", port=555, broadcast=['192.168.16.255'])
+
+# check device status
+# takes either an ip or a mac address
+dev_status: bool = status(ip_address="192.168.16.5") # contains true or false
 
 ```
 ```python
