@@ -28,10 +28,12 @@ def cli() -> None:
         if not args:
             parser_status.print_usage()
             return
+
         status(**args)
     elif args['command'] == 'w':
         del args['command']
         if not args:
             parser_wake.print_usage()
             return
+            
         wake_up(**args)

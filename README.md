@@ -16,34 +16,75 @@ A few motivating and useful examples of how remly can be used.
 #### CLI program
 
 ```sh
-usage: remly.py [-h] -m ETHERNET_ADDRESS [-p PORT] [-b BROADCAST]
+usage: remly [-h] {s,w} ...
 
-Turn on your computer remotely
+Cli script allow turn on your computer remotely and check status
+
+positional arguments:
+  {s,w}       commands
+    s         check device status (accept ipv4 and mac)
+    w         wake up computer
 
 optional arguments:
-  -h, --help           show this help message and exit
-  -m ETHERNET_ADDRESS  device ethernet address
-  -p PORT              port for WoL protocol (default: 9)
-  -b BROADCAST         broadcast address (default: 192.168.0.255)
+  -h, --help  show this help message and exit
+```
+
+Wake up device
+```sh
+remly w -m AA:AA:AA:AA:AA:AA
+```
+
+```sh
+usage: remly w [-h] [--mac ETH_ADDR] [--port PORT] [--bcasts BCASTS [BCASTS ...]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --mac ETH_ADDR, -m ETH_ADDR
+                        device physical address
+  --port PORT, -p PORT  port for WoL protocol (default: 9)
+  --bcasts BCASTS [BCASTS ...], -b BCASTS [BCASTS ...]
+                        broadcast address (default: 192.168.0.255)
+```
+
+Check device status
+```
+remly s -m AA:AA:AA:AA:AA:AA
+```
+
+```sh
+usage: remly s [-h] [--mac ETH_ADDR] [--ipv4 IP_ADDRESS] [--port PORT] [--timeout TIMEOUT]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --mac ETH_ADDR, -m ETH_ADDR
+                        device physical address
+  --ipv4 IP_ADDRESS, -v4 IP_ADDRESS
+                        device ipv4 address
+  --port PORT, -p PORT  port for ICMP protocol (default: 7)
+  --timeout TIMEOUT, -t TIMEOUT
 ```
 
 #### library
 ```python
 from remly import wake_up, status
 
-wake_up(eth_addr="AA:AA:AA:AA:AA:AA", port=555, broadcast=['192.168.16.255'])
+# wake up device
+wake_up(eth_addr='AA:AA:AA:AA:AA:AA', port=555, broadcast=['192.168.16.255'])
 
 # check device status
 # takes either an ip or a mac address
-dev_status: bool = status(ip_address="192.168.16.5") # contains true or false
+status(ip_address='192.168.16.5')
+
+# based on physical address
+status(eth_addr='2b:56:ff:d3:3f:31', timeout=5, port=1)
 
 ```
 ```python
 from remly import wake_up
 
 known_computers = {
-    "dev1": "2b:56:ff:d3:3f:31",
-    "dev2": "60:f4:4c:53:9a:7f"
+    'dev1': '2b:56:ff:d3:3f:31',
+    'dev2': '60:f4:4c:53:9a:7f'
 }
 
 for __, dev in known_computers.items():

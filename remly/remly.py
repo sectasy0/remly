@@ -24,7 +24,7 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0)
 
     In small local networks (with one router) it does not matter what port we set, because the packet will 
     always reach the destination (broadcast) that will send an ethernet frame addressed to the device
-    that we want to start remotely (the option in the bios or in the graphics card device settings mustbe enabled). 
+    that we want to start remotely (the option in the bios or in the network card device settings mustbe enabled). 
     In more extensive networks with more routers, the gateway must be properly configured to pass the 
     magic packet through, and here the port matters.
     '''
@@ -88,7 +88,6 @@ def status(ip_address: str = None, eth_addr: str = None, port: int = 1, timeout:
                 return False
 
             __sock.close()
-
     else:
         raise ValueError('Incorrect entry, please use IPv4 CIDR or mac format')
     
