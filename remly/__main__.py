@@ -1,3 +1,3 @@
-from main import cli
+from remly.main import cli
 
 cli()

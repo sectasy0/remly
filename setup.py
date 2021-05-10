@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 HERE = pathlib.Path(__file__).parent
 
 setup(name='remly',
-      version='1.0.5',
+      version='2.0',
       description='Small python library and CLI script which allows running computers remotely on LAN.',
       long_description=(HERE / "README.md").read_text(),
       long_description_content_type="text/markdown",

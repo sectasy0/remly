@@ -1,7 +1,6 @@
 from subprocess import Popen, PIPE
 from os import path
-import re, sys
-import struct, socket
+import re
 
 def read_arptable(eth_addr: str = None, ipv4_addr: str = None) -> str:
     ''' return a string

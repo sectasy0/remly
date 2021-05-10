@@ -1,5 +1,5 @@
 import socket
-import struct
+from struct import unpack
 
 def is_valid_eth_address(eth_addr: str) -> bool:
     ''' return a bool
@@ -44,7 +44,7 @@ def crc16(packet: bytes) -> bytes:
     '''
     total: int = 0
     num_words: int = len(packet) // 2
-    for chunk in struct.unpack("!%sH" % num_words, packet[0:num_words*2]):
+    for chunk in unpack("!%sH" % num_words, packet[0:num_words*2]):
         total += chunk
 
     if len(packet) % 2:

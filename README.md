@@ -94,16 +94,12 @@ for __, dev in known_computers.items():
 
 ## Release History
 
-* 1.0.51
+* 2.0
     * code documentation.
     * upgrade mac verification function to support more physical addresses formats.
     * added future allows getting ip addres from mac (read_arptable).
     * added checking device status function.
-* 1.0.5
-    * fixed a startup bug.
-    * improve code.
-    * removing unnecessary class.
-* 1.0.0
+* 1.0
     * release working program.
 
 ## Meta

@@ -1,4 +1,4 @@
-from remly import wake_up, status
+from remly.remly import wake_up, status
 
 import argparse
 
@@ -29,7 +29,10 @@ def cli() -> None:
             parser_status.print_usage()
             return
 
-        status(**args)
+        if status(**args): 
+            print("Online")
+        else: print("Offline")
+
     elif args['command'] == 'w':
         del args['command']
         if not args:
