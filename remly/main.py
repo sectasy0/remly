@@ -1,9 +1,11 @@
 from remly.remly import wake_up, status
+from argparse import ArgumentParser
+
 
 import argparse
 
 def cli() -> None:
-    parser: argparse.ArgumentParser = argparse.ArgumentParser(
+    parser: ArgumentParser = ArgumentParser(
         description="Cli script allow turn on your computer remotely and check status")
     subparsers = parser.add_subparsers(help='commands', dest='command')
 

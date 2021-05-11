@@ -1,6 +1,8 @@
 from subprocess import Popen, PIPE
-from os import path
-import re
+from re import IGNORECASE, search
+from platform import system
+from os.path import exists
+
 
 def read_arptable(eth_addr: str = None, ipv4_addr: str = None) -> str:
     ''' return a string
@@ -21,21 +23,23 @@ def read_arptable(eth_addr: str = None, ipv4_addr: str = None) -> str:
         searchstr = ipv4_addr.replace('.', '.?')
     else: raise ValueError('ipv4 addres and mac addres must be a string')
     
-    try:
+    if system() == "Windows":
         output = Popen(['arp', '-a'], stdout=PIPE,
                        stderr=PIPE).communicate()[0].decode('utf-8')
         for line in output.strip().split('\n'):
-            if re.search(searchstr, line, re.IGNORECASE):
-                return line.split()[addr_type]
-    except FileNotFoundError:
+            if search(searchstr, line, IGNORECASE):
+                return line.split()[addr_type] if addr_type == 0 else line.split()[addr_type + 2]
+    else:
         arp_cache: str = '/proc/net/arp'
-        if path.exists(arp_cache):
+        if exists(arp_cache):
             with open(arp_cache, 'r') as file:
                 for line in file.readlines()[1:]:
                     line = line.strip()
-                    if re.search(searchstr, line):
+                    if search(searchstr, line):
                         # for posix systems in this case addr_type for ipv4 must be addr_type + 2
                         # see /proc/net/arp 
                         return line.split()[addr_type] if addr_type == 0 else line.split()[addr_type + 2]
+                    else:
+                        raise NameError('Record not found in /proc/net/arp')
         else:
             return None

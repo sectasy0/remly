@@ -3,15 +3,13 @@ from random import random
 import socket
 
 from typing import List
-from subprocess import Popen, PIPE
-from os import path
 
 from remly.network.utils import (is_valid_eth_address,
                            is_valid_ipv4_address, crc16)
 from remly.network.arp import read_arptable
 
 
-def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0) -> None:
+def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 9) -> None:
     ''' return a none
 
     eth_addr - device mac addres
@@ -28,7 +26,7 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0)
     '''
     if not is_valid_eth_address(eth_addr):
         raise ValueError("Incorrect entry, use 6-bytes physical address")
-
+    
     address_oct: List[str] = eth_addr.split(
         ':') if eth_addr[2] == ':' else eth_addr.split('-')
 
@@ -43,12 +41,12 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 0)
 
     magic_packet = b'\xff' * 6 + magic_packet * 16
 
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as __sock:
+        __sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
         for bcast in bcasts:
-            sock.sendto(magic_packet, (bcast, port))
-        sock.close()
+            __sock.sendto(magic_packet, (bcast, port))
+        __sock.close()
 
 
 
