@@ -10,19 +10,8 @@ from remly.network.arp import read_arptable
 
 
 def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 9) -> None:
-    ''' return a none
-
-    eth_addr - device mac addres
-    bcasts - list of broadcasts adrreses
-    port - destination port
-
+    '''
     sends the magic packet to broadcast address with device mac address which we want to power on remotely.
-
-    In small local networks (with one router) it does not matter what port we set, because the packet will 
-    always reach the destination (broadcast) that will send an ethernet frame addressed to the device
-    that we want to start remotely (the option in the bios or in the network card device settings mustbe enabled). 
-    In more extensive networks with more routers, the gateway must be properly configured to pass the 
-    magic packet through, and here the port matters.
     '''
     if not is_valid_eth_address(eth_addr):
         raise ValueError("Incorrect entry, use 6-bytes physical address")
@@ -51,8 +40,7 @@ def wake_up(eth_addr: str, bcasts: List[str] = ['192.168.0.255'], port: int = 9)
 
 
 def status(ip_address: str = None, eth_addr: str = None, port: int = 1, timeout: int = 1) -> bool:
-    ''' return bool (true - online, false - offline)
-
+    '''
     check the status of the device based on ip or mac address
     '''
     if eth_addr:
