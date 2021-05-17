@@ -5,10 +5,7 @@ from os.path import exists
 
 
 def read_arptable(eth_addr: str = None, ipv4_addr: str = None) -> str:
-    ''' return a string
-
-    eth_addr - mac address
-
+    '''
     universal way to get ip address and mac from the system ARP table
     select one of the parameters, eth_addr has priority if you fill up both
     '''
