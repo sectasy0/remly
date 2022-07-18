@@ -1,5 +1,5 @@
-# Remly
-> Small python library and CLI script which allows running computers remotely on LAN.
+# Remly (Wake On Lan)
+> Small python library and CLI script which allows running computers remotely on LAN using WoL protocol.
 
 ![Python version][python-image]
 
